@@ -2,15 +2,15 @@
 
 For manhunt games. Makes all hunters look exactly the same so the speedrunner can't tell them apart.
 
-## The problem
+**The problem**
 
 In a normal manhunt, the speedrunner can see who's chasing them. "That's Steve coming from the left, Alex from behind." They can track individual hunters and plan around them.
 
-## The solution
+**The solution**
 
 This plugin makes every hunter look identical. Same skin, same armor, same name. The speedrunner just sees a group of identical threats.
 
-## Three ways to do it
+**Three ways to do it**
 
 **Stealth Mode** - No extra plugins needed. Hunters become invisible with matching armor and player heads. Works out of the box.
 
@@ -18,7 +18,7 @@ This plugin makes every hunter look identical. Same skin, same armor, same name.
 
 **Auto Mode** - Uses Disguise mode if LibsDisguises is installed, Stealth mode if not.
 
-## Setup
+**Setup**
 
 1. Set a speedrunner: `/ih runner set PlayerName`
 2. Add hunters: `/ih hunter add PlayerName`
@@ -26,14 +26,14 @@ This plugin makes every hunter look identical. Same skin, same armor, same name.
 
 Hunters get a compass that tracks the runner. They'll all look the same. The runner won't know who's who.
 
-## Works well for
+**Works well for**
 
 - Regular manhunt games
 - Recorded/streamed content
 - Competitive events
 - Any scenario where hunter identity matters
 
-## Config options
+**Config options**
 
 - Disguise mode selection
 - Armor color and type
@@ -41,7 +41,7 @@ Hunters get a compass that tracks the runner. They'll all look the same. The run
 - Compass settings
 - Custom messages
 
-## Support
+**Support**
 
 <https://discord.gg/7fQPG4Grwt>
 
