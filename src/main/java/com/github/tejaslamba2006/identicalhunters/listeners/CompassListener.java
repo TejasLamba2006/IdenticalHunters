@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Handles compass tracking functionality
- */
 public class CompassListener implements Listener {
 
     private final IdenticalHunters plugin;
@@ -33,15 +30,11 @@ public class CompassListener implements Listener {
         this.plugin = plugin;
         this.lastCompassUse = new HashMap<>();
 
-        // Start compass update task if enabled
         if (plugin.getConfig().getBoolean("compass.enabled", true)) {
             startCompassUpdateTask();
         }
     }
 
-    /**
-     * Handle compass right-click for manual update
-     */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCompassUse(PlayerInteractEvent event) {
         if (!plugin.getConfig().getBoolean("compass.enabled", true))
@@ -49,28 +42,23 @@ public class CompassListener implements Listener {
 
         Player player = event.getPlayer();
 
-        // Check if using right-click
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
-        // Check if holding tracking compass
         ItemStack item = event.getItem();
         if (item == null || item.getType() != Material.COMPASS) {
             return;
         }
 
-        // Check if it's a tracking compass (check custom name)
         if (!isTrackingCompass(item)) {
             return;
         }
 
-        // Check if player is a hunter
         if (!plugin.getHunterManager().isHunter(player)) {
             return;
         }
 
-        // Rate limit - 1 second cooldown
         long now = System.currentTimeMillis();
         Long lastUse = lastCompassUse.get(player.getUniqueId());
         if (lastUse != null && now - lastUse < 1000) {
@@ -78,10 +66,8 @@ public class CompassListener implements Listener {
         }
         lastCompassUse.put(player.getUniqueId(), now);
 
-        // Update compass
         updatePlayerCompass(player);
 
-        // Feedback
         Player target = plugin.getHunterManager().getTargetPlayer();
         if (target != null && target.isOnline()) {
             double distance = player.getLocation().distance(target.getLocation());
@@ -92,9 +78,6 @@ public class CompassListener implements Listener {
         }
     }
 
-    /**
-     * Check if an item is a tracking compass
-     */
     private boolean isTrackingCompass(ItemStack item) {
         if (item == null || !item.hasItemMeta())
             return false;
@@ -103,20 +86,15 @@ public class CompassListener implements Listener {
         if (!meta.hasDisplayName())
             return false;
 
-        // Check if the display name matches our compass name
         String compassName = plugin.getConfig().getString("compass.compass-name", "&6Tracking Compass");
         Component expectedName = plugin.colorize(compassName);
 
         return meta.displayName() != null && meta.displayName().equals(expectedName);
     }
 
-    /**
-     * Give a player a tracking compass
-     */
     public void giveTrackingCompass(Player player) {
         ItemStack compass = createTrackingCompass();
 
-        // Check if player already has a tracking compass
         for (ItemStack item : player.getInventory().getContents()) {
             if (isTrackingCompass(item)) {
                 return; // Already has one
@@ -126,18 +104,13 @@ public class CompassListener implements Listener {
         player.getInventory().addItem(compass);
     }
 
-    /**
-     * Create a tracking compass item
-     */
     public ItemStack createTrackingCompass() {
         ItemStack compass = new ItemStack(Material.COMPASS);
         CompassMeta meta = (CompassMeta) compass.getItemMeta();
 
-        // Set name
         String name = plugin.getConfig().getString("compass.compass-name", "&6Tracking Compass");
         meta.displayName(plugin.colorize(name));
 
-        // Set lore
         List<String> loreStrings = plugin.getConfig().getStringList("compass.compass-lore");
         if (!loreStrings.isEmpty()) {
             List<Component> lore = loreStrings.stream()
@@ -150,9 +123,6 @@ public class CompassListener implements Listener {
         return compass;
     }
 
-    /**
-     * Update a player's compass to point to target
-     */
     public void updatePlayerCompass(Player hunter) {
         if (!plugin.getConfig().getBoolean("compass.track-target", true))
             return;
@@ -161,9 +131,7 @@ public class CompassListener implements Listener {
         if (target == null || !target.isOnline())
             return;
 
-        // Only track if in same world
         if (!hunter.getWorld().equals(target.getWorld())) {
-            // Point to world spawn if in different world
             hunter.setCompassTarget(hunter.getWorld().getSpawnLocation());
             return;
         }
@@ -171,7 +139,6 @@ public class CompassListener implements Listener {
         Location targetLoc = target.getLocation();
         hunter.setCompassTarget(targetLoc);
 
-        // Also update lodestone compass if held
         ItemStack mainHand = hunter.getInventory().getItemInMainHand();
         if (isTrackingCompass(mainHand)) {
             CompassMeta meta = (CompassMeta) mainHand.getItemMeta();
@@ -181,9 +148,6 @@ public class CompassListener implements Listener {
         }
     }
 
-    /**
-     * Start automatic compass update task
-     */
     private void startCompassUpdateTask() {
         int interval = plugin.getConfig().getInt("compass.update-interval", 20);
 
@@ -195,7 +159,6 @@ public class CompassListener implements Listener {
             if (target == null || !target.isOnline())
                 return;
 
-            // Update compass for all hunters
             for (UUID hunterId : plugin.getHunterManager().getHunters()) {
                 Player hunter = Bukkit.getPlayer(hunterId);
                 if (hunter != null && hunter.isOnline()) {
@@ -205,9 +168,6 @@ public class CompassListener implements Listener {
         }, interval, interval);
     }
 
-    /**
-     * Stop compass update task
-     */
     public void stopCompassUpdateTask() {
         if (compassUpdateTask != null) {
             compassUpdateTask.cancel();

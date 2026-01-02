@@ -7,23 +7,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * Utility class for advertising SMP Core plugin
- */
 public class PluginAdvertiser {
 
     private static final String SMP_CORE_PLUGIN = "smp-core";
     private static final String DISCORD_LINK = "https://discord.gg/7fQPG4Grwt";
 
-    /**
-     * Show advertisement message on plugin enable
-     */
     public static void showEnableMessage(JavaPlugin plugin) {
         if (Bukkit.getPluginManager().getPlugin(SMP_CORE_PLUGIN) != null) {
             return; // SMP Core is installed, no need to advertise
         }
 
-        // ANSI colors for console
         String reset = "\u001B[0m";
         String red = "\u001B[31m";
         String green = "\u001B[32m";
@@ -50,13 +43,9 @@ public class PluginAdvertiser {
         plugin.getLogger().info(cyan + "╚══════════════════════════════════════════════════════════════╝" + reset);
         plugin.getLogger().info("");
 
-        // Register listener for in-game advertisement to ops
         Bukkit.getPluginManager().registerEvents(new PluginAdvertiserListener(plugin), plugin);
     }
 
-    /**
-     * Listener for showing advertisement to ops on join
-     */
     private static class PluginAdvertiserListener implements Listener {
 
         private final JavaPlugin plugin;
@@ -69,13 +58,11 @@ public class PluginAdvertiser {
         public void onPlayerJoin(PlayerJoinEvent event) {
             Player player = event.getPlayer();
 
-            // Only show to ops, first time per session
             if (!player.isOp())
                 return;
             if (Bukkit.getPluginManager().getPlugin(SMP_CORE_PLUGIN) != null)
                 return;
 
-            // Delay message slightly
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (!player.isOnline())
                     return;

@@ -13,9 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Quick command for adding/removing hunters
- */
 public class HunterCommand implements CommandExecutor, TabCompleter {
 
     private final IdenticalHunters plugin;

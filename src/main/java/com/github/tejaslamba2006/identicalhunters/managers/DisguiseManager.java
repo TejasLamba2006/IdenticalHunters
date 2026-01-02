@@ -16,9 +16,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
-/**
- * Manages player disguises - supports LibsDisguises or fallback stealth mode
- */
 public class DisguiseManager {
 
     private final IdenticalHunters plugin;
@@ -39,21 +36,15 @@ public class DisguiseManager {
         this.savedArmor = new HashMap<>();
         this.disguisedPlayers = new HashSet<>();
 
-        // Check for LibsDisguises
         libsDisguisesAvailable = Bukkit.getPluginManager().getPlugin("LibsDisguises") != null;
 
-        // Determine mode
         determineMode();
 
-        // Start invisibility refresh task if using stealth mode
         if (currentMode == DisguiseMode.STEALTH) {
             startInvisibilityTask();
         }
     }
 
-    /**
-     * Determine which mode to use based on config and available plugins
-     */
     private void determineMode() {
         String configMode = plugin.getConfig().getString("mode", "AUTO").toUpperCase();
 
@@ -75,16 +66,10 @@ public class DisguiseManager {
         }
     }
 
-    /**
-     * Get current disguise mode
-     */
     public DisguiseMode getCurrentMode() {
         return currentMode;
     }
 
-    /**
-     * Apply disguise to a player
-     */
     public void applyDisguise(Player player) {
         if (player.hasPermission("identicalhunters.bypass")) {
             return;
@@ -103,9 +88,6 @@ public class DisguiseManager {
         disguisedPlayers.add(player.getUniqueId());
     }
 
-    /**
-     * Remove disguise from a player
-     */
     public void removeDisguise(Player player) {
         if (!disguisedPlayers.contains(player.getUniqueId())) {
             return; // Not disguised
@@ -120,9 +102,6 @@ public class DisguiseManager {
         disguisedPlayers.remove(player.getUniqueId());
     }
 
-    /**
-     * Remove all active disguises
-     */
     public void removeAllDisguises() {
         for (UUID playerId : new HashSet<>(disguisedPlayers)) {
             Player player = Bukkit.getPlayer(playerId);
@@ -133,39 +112,26 @@ public class DisguiseManager {
         disguisedPlayers.clear();
     }
 
-    /**
-     * Check if a player is disguised
-     */
     public boolean isDisguised(Player player) {
         return disguisedPlayers.contains(player.getUniqueId());
     }
 
-    // ==========================================
-    // LIBS DISGUISES MODE
-    // ==========================================
 
-    /**
-     * Apply LibsDisguises disguise
-     */
     private void applyLibsDisguise(Player player) {
         try {
             String skinName = plugin.getConfig().getString("disguise-skin", "Dream");
             String displayName = plugin.getConfig().getString("disguise-name", "&cHunter");
 
-            // Use reflection to avoid compile-time dependency
             Class<?> disguiseApiClass = Class.forName("me.libraryaddict.disguise.DisguiseAPI");
             Class<?> playerDisguiseClass = Class.forName("me.libraryaddict.disguise.disguisetypes.PlayerDisguise");
 
-            // Create PlayerDisguise
             Object disguise = playerDisguiseClass.getConstructor(String.class).newInstance(skinName);
 
-            // Set name if configured
             if (plugin.getConfig().getBoolean("disguise.show-name", true)) {
                 playerDisguiseClass.getMethod("setName", String.class).invoke(disguise,
                         displayName.replace('&', '§'));
             }
 
-            // Apply disguise
             disguiseApiClass.getMethod("disguiseToAll", org.bukkit.entity.Entity.class,
                     Class.forName("me.libraryaddict.disguise.disguisetypes.Disguise"))
                     .invoke(null, player, disguise);
@@ -174,14 +140,10 @@ public class DisguiseManager {
 
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to apply LibsDisguises disguise: " + e.getMessage());
-            // Fallback to stealth mode
             applyStealthMode(player);
         }
     }
 
-    /**
-     * Remove LibsDisguises disguise
-     */
     private void removeLibsDisguise(Player player) {
         try {
             Class<?> disguiseApiClass = Class.forName("me.libraryaddict.disguise.DisguiseAPI");
@@ -193,29 +155,19 @@ public class DisguiseManager {
         }
     }
 
-    // ==========================================
-    // STEALTH MODE (Fallback)
-    // ==========================================
 
-    /**
-     * Apply stealth mode - invisibility + matching armor
-     */
     private void applyStealthMode(Player player) {
-        // Save current armor
         savedArmor.put(player.getUniqueId(), player.getInventory().getArmorContents().clone());
 
-        // Apply invisibility
         if (plugin.getConfig().getBoolean("stealth.apply-invisibility", true)) {
             int duration = plugin.getConfig().getInt("stealth.invisibility-duration", 60) * 20;
             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 0, false, false, true));
         }
 
-        // Apply matching armor
         if (plugin.getConfig().getBoolean("stealth.matching-armor.enabled", true)) {
             applyMatchingArmor(player);
         }
 
-        // Apply player head
         if (plugin.getConfig().getBoolean("stealth.player-head.enabled", true)) {
             applyPlayerHead(player);
         }
@@ -223,23 +175,15 @@ public class DisguiseManager {
         plugin.getLogger().info("Applied stealth mode to " + player.getName());
     }
 
-    /**
-     * Remove stealth mode
-     */
     private void removeStealthMode(Player player) {
-        // Remove invisibility
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
 
-        // Restore saved armor
         ItemStack[] saved = savedArmor.remove(player.getUniqueId());
         if (saved != null) {
             player.getInventory().setArmorContents(saved);
         }
     }
 
-    /**
-     * Apply matching armor to player
-     */
     private void applyMatchingArmor(Player player) {
         String materialStr = plugin.getConfig().getString("stealth.matching-armor.material", "LEATHER").toUpperCase();
 
@@ -251,7 +195,6 @@ public class DisguiseManager {
         String armorName = plugin.getConfig().getString("stealth.matching-armor.armor-name", "&cHunter Armor");
         Component armorNameComponent = plugin.colorize(armorName);
 
-        // Get armor pieces based on material type
         switch (materialStr) {
             case "LEATHER" -> {
                 helmet = createLeatherArmor(Material.LEATHER_HELMET, armorNameComponent);
@@ -297,7 +240,6 @@ public class DisguiseManager {
             }
         }
 
-        // Don't replace helmet if using player head
         if (!plugin.getConfig().getBoolean("stealth.player-head.enabled", true)) {
             player.getInventory().setHelmet(helmet);
         }
@@ -307,16 +249,12 @@ public class DisguiseManager {
         player.getInventory().setBoots(boots);
     }
 
-    /**
-     * Create leather armor with color
-     */
     private ItemStack createLeatherArmor(Material material, Component name) {
         ItemStack item = new ItemStack(material);
         LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
 
         meta.displayName(name);
 
-        // Parse color from config
         String colorStr = plugin.getConfig().getString("stealth.matching-armor.leather-color", "255,0,0");
         Color color;
 
@@ -328,7 +266,6 @@ public class DisguiseManager {
                         Integer.parseInt(parts[1].trim()),
                         Integer.parseInt(parts[2].trim()));
             } else {
-                // Try to parse as color name
                 color = switch (colorStr.toUpperCase()) {
                     case "RED" -> Color.RED;
                     case "BLUE" -> Color.BLUE;
@@ -351,9 +288,6 @@ public class DisguiseManager {
         return item;
     }
 
-    /**
-     * Create regular armor piece
-     */
     private ItemStack createArmor(Material material, Component name) {
         ItemStack item = new ItemStack(material);
         var meta = item.getItemMeta();
@@ -362,16 +296,12 @@ public class DisguiseManager {
         return item;
     }
 
-    /**
-     * Apply player head to hunter
-     */
     private void applyPlayerHead(Player player) {
         String skinName = plugin.getConfig().getString("disguise-skin", "Dream");
 
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
 
-        // Set owning player
         OfflinePlayer skinPlayer = Bukkit.getOfflinePlayer(skinName);
         meta.setOwningPlayer(skinPlayer);
 
@@ -385,9 +315,6 @@ public class DisguiseManager {
         }
     }
 
-    /**
-     * Start invisibility refresh task
-     */
     private void startInvisibilityTask() {
         if (invisibilityTask != null) {
             invisibilityTask.cancel();
@@ -413,23 +340,16 @@ public class DisguiseManager {
         }, refreshInterval, refreshInterval);
     }
 
-    /**
-     * Reload disguise manager
-     */
     public void reload() {
-        // Cancel existing task
         if (invisibilityTask != null) {
             invisibilityTask.cancel();
             invisibilityTask = null;
         }
 
-        // Re-check available plugins
         libsDisguisesAvailable = Bukkit.getPluginManager().getPlugin("LibsDisguises") != null;
 
-        // Re-determine mode
         determineMode();
 
-        // Restart invisibility task if needed
         if (currentMode == DisguiseMode.STEALTH) {
             startInvisibilityTask();
         }

@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Main command handler for IdenticalHunters
- */
 public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
 
     private final IdenticalHunters plugin;
@@ -54,9 +51,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    /**
-     * Start the hunt
-     */
     private void handleStart(CommandSender sender) {
         if (plugin.getHunterManager().isGameActive()) {
             sender.sendMessage(plugin.colorize("&cThe hunt is already active!"));
@@ -69,7 +63,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         }
 
         if (plugin.getHunterManager().startGame()) {
-            // Give compasses if enabled
             if (plugin.getConfig().getBoolean("compass.give-compass", true)) {
                 CompassListener compassListener = new CompassListener(plugin);
                 for (UUID hunterId : plugin.getHunterManager().getHunters()) {
@@ -86,9 +79,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-    /**
-     * Stop the hunt
-     */
     private void handleStop(CommandSender sender) {
         if (!plugin.getHunterManager().isGameActive()) {
             sender.sendMessage(plugin.colorize("&cNo hunt is currently active!"));
@@ -99,9 +89,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(plugin.colorize("&aThe hunt has been stopped."));
     }
 
-    /**
-     * Add a hunter
-     */
     private void handleSetHunter(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(plugin.colorize("&cUsage: /ih sethunter <player>"));
@@ -127,9 +114,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-    /**
-     * Remove a hunter
-     */
     private void handleRemoveHunter(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(plugin.colorize("&cUsage: /ih removehunter <player>"));
@@ -150,9 +134,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-    /**
-     * Set the target (speedrunner)
-     */
     private void handleSetTarget(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(plugin.colorize("&cUsage: /ih settarget <player>"));
@@ -175,9 +156,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         target.sendMessage(plugin.colorize("&eYou are now the target! Run!"));
     }
 
-    /**
-     * Remove the target
-     */
     private void handleRemoveTarget(CommandSender sender) {
         if (plugin.getHunterManager().getTarget() == null) {
             sender.sendMessage(plugin.colorize("&cNo target is currently set."));
@@ -188,13 +166,9 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(plugin.getMessage("target-removed"));
     }
 
-    /**
-     * List hunters and target
-     */
     private void handleList(CommandSender sender) {
         sender.sendMessage(plugin.colorize("&8&m----------&r &c&lIdenticalHunters &8&m----------"));
 
-        // Show target
         Player target = plugin.getHunterManager().getTargetPlayer();
         if (target != null) {
             sender.sendMessage(plugin.colorize("&eTarget: &f" + target.getName()));
@@ -202,7 +176,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(plugin.colorize("&eTarget: &7None set"));
         }
 
-        // Show hunters
         sender.sendMessage(plugin.colorize("&cHunters: &7(" + plugin.getHunterManager().getHunterCount() + ")"));
         for (UUID hunterId : plugin.getHunterManager().getHunters()) {
             Player hunter = Bukkit.getPlayer(hunterId);
@@ -212,23 +185,18 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(plugin.colorize("  &7- &f" + name + " " + status + disguised));
         }
 
-        // Show game status
         String gameStatus = plugin.getHunterManager().isGameActive() ? "&aActive" : "&cInactive";
         sender.sendMessage(plugin.colorize("&7Game Status: " + gameStatus));
 
         sender.sendMessage(plugin.colorize("&8&m----------------------------------------"));
     }
 
-    /**
-     * Show plugin info
-     */
     private void handleInfo(CommandSender sender) {
         sender.sendMessage(plugin.colorize("&8&m----------&r &c&lIdenticalHunters &8&m----------"));
         sender.sendMessage(plugin.colorize("&7Version: &f" + plugin.getDescription().getVersion()));
         sender.sendMessage(plugin.colorize("&7Author: &f" + String.join(", ", plugin.getDescription().getAuthors())));
         sender.sendMessage(plugin.colorize("&7Mode: &f" + plugin.getDisguiseManager().getCurrentMode().name()));
 
-        // Mode explanation
         switch (plugin.getDisguiseManager().getCurrentMode()) {
             case DISGUISE ->
                 sender.sendMessage(plugin.colorize("&7Using &aLibsDisguises &7for full player disguises."));
@@ -237,7 +205,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
             case AUTO -> sender.sendMessage(plugin.colorize("&7Auto-detecting best disguise method."));
         }
 
-        // LibsDisguises status
         boolean hasLibs = Bukkit.getPluginManager().getPlugin("LibsDisguises") != null;
         String libsStatus = hasLibs ? "&aInstalled" : "&cNot Installed";
         sender.sendMessage(plugin.colorize("&7LibsDisguises: " + libsStatus));
@@ -245,9 +212,6 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(plugin.colorize("&8&m----------------------------------------"));
     }
 
-    /**
-     * Give compass to player
-     */
     private void handleCompass(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
             if (args.length < 2) {
@@ -281,25 +245,16 @@ public class IdenticalHuntersCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-    /**
-     * Show current mode
-     */
     private void handleMode(CommandSender sender) {
         sender.sendMessage(
                 plugin.getMessage("mode-" + plugin.getDisguiseManager().getCurrentMode().name().toLowerCase()));
     }
 
-    /**
-     * Reload configuration
-     */
     private void handleReload(CommandSender sender) {
         plugin.reload();
         sender.sendMessage(plugin.getMessage("reload"));
     }
 
-    /**
-     * Send help message
-     */
     private void sendHelp(CommandSender sender) {
         sender.sendMessage(plugin.colorize("&8&m----------&r &c&lIdenticalHunters &8&m----------"));
         sender.sendMessage(plugin.colorize("&c/ih start &8- &7Start the hunt"));

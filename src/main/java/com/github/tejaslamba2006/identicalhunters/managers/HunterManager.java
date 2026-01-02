@@ -8,9 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Manages hunters and target for the manhunt game
- */
 public class HunterManager {
 
     private final IdenticalHunters plugin;
@@ -25,9 +22,6 @@ public class HunterManager {
         this.gameActive = false;
     }
 
-    /**
-     * Add a player as a hunter
-     */
     public boolean addHunter(UUID playerId) {
         if (hunters.contains(playerId)) {
             return false;
@@ -35,7 +29,6 @@ public class HunterManager {
 
         hunters.add(playerId);
 
-        // If game is active, apply disguise immediately
         if (gameActive) {
             Player player = Bukkit.getPlayer(playerId);
             if (player != null && player.isOnline()) {
@@ -46,9 +39,6 @@ public class HunterManager {
         return true;
     }
 
-    /**
-     * Remove a player from hunters
-     */
     public boolean removeHunter(UUID playerId) {
         if (!hunters.contains(playerId)) {
             return false;
@@ -56,7 +46,6 @@ public class HunterManager {
 
         hunters.remove(playerId);
 
-        // Remove disguise
         Player player = Bukkit.getPlayer(playerId);
         if (player != null && player.isOnline()) {
             plugin.getDisguiseManager().removeDisguise(player);
@@ -65,81 +54,48 @@ public class HunterManager {
         return true;
     }
 
-    /**
-     * Check if a player is a hunter
-     */
     public boolean isHunter(UUID playerId) {
         return hunters.contains(playerId);
     }
 
-    /**
-     * Check if a player is a hunter
-     */
     public boolean isHunter(Player player) {
         return isHunter(player.getUniqueId());
     }
 
-    /**
-     * Get all hunter UUIDs
-     */
     public Set<UUID> getHunters() {
         return new HashSet<>(hunters);
     }
 
-    /**
-     * Get number of hunters
-     */
     public int getHunterCount() {
         return hunters.size();
     }
 
-    /**
-     * Set the target (speedrunner)
-     */
     public void setTarget(UUID playerId) {
         this.target = playerId;
     }
 
-    /**
-     * Remove the target
-     */
     public void removeTarget() {
         this.target = null;
     }
 
-    /**
-     * Get the target UUID
-     */
     public UUID getTarget() {
         return target;
     }
 
-    /**
-     * Get the target player
-     */
     public Player getTargetPlayer() {
         if (target == null)
             return null;
         return Bukkit.getPlayer(target);
     }
 
-    /**
-     * Check if a player is the target
-     */
     public boolean isTarget(UUID playerId) {
         return target != null && target.equals(playerId);
     }
 
-    /**
-     * Check if a player is the target
-     */
     public boolean isTarget(Player player) {
         return isTarget(player.getUniqueId());
     }
 
-    /**
-     * Start the game - apply all disguises
-     */
     public boolean startGame() {
         int minHunters = plugin.getConfig().getInt("game.min-hunters", 1);
 
@@ -158,7 +114,6 @@ public class HunterManager {
             }
         }
 
-        // Broadcast
         if (plugin.getConfig().getBoolean("game.broadcast-events", true)) {
             Bukkit.broadcast(plugin.getMessage("game-started"));
         }
@@ -166,9 +121,6 @@ public class HunterManager {
         return true;
     }
 
-    /**
-     * Stop the game - remove all disguises
-     */
     public void stopGame() {
         gameActive = false;
 
@@ -176,32 +128,21 @@ public class HunterManager {
             plugin.getDisguiseManager().removeAllDisguises();
         }
 
-        // Broadcast
         if (plugin.getConfig().getBoolean("game.broadcast-events", true)) {
             Bukkit.broadcast(plugin.getMessage("game-stopped"));
         }
     }
 
-    /**
-     * Check if game is active
-     */
     public boolean isGameActive() {
         return gameActive;
     }
 
-    /**
-     * Clear all data
-     */
     public void clearAll() {
         stopGame();
         hunters.clear();
         target = null;
     }
 
-    /**
-     * Reload manager
-     */
     public void reload() {
-        // Nothing specific to reload, config values are read dynamically
     }
 }
