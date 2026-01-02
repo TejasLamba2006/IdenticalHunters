@@ -1,62 +1,48 @@
 # IdenticalHunters
 
-## The Ultimate Manhunt Plugin! 🎯
+For manhunt games. Makes all hunters look exactly the same so the speedrunner can't tell them apart.
 
-Ever watched Dream's manhunt videos and wanted to recreate that experience on your server? **IdenticalHunters** takes it to the next level by making all hunters look exactly the same!
+## The problem
 
-### 🎭 What Does It Do?
+In a normal manhunt, the speedrunner can see who's chasing them. "That's Steve coming from the left, Alex from behind." They can track individual hunters and plan around them.
 
-When you start a manhunt game, all hunters will be disguised to look identical. The speedrunner (target) won't be able to tell who's who - are they being chased by George? Sapnap? They all look the same!
+## The solution
 
-### ✨ Key Features
+This plugin makes every hunter look identical. Same skin, same armor, same name. The speedrunner just sees a group of identical threats.
 
-**🔄 Smart Mode Selection**
-- Works with or without additional plugins
-- Automatically picks the best disguise method for your server
-- Full skin disguises with LibsDisguises, or clever fallback mode
+## Three ways to do it
 
-**🧭 Hunter Compass**
-- Hunters get a tracking compass that points to the speedrunner
-- Shows distance in real-time
-- Auto-updates every second
+**Stealth Mode** - No extra plugins needed. Hunters become invisible with matching armor and player heads. Works out of the box.
 
-**⚡ Easy to Use**
-- Simple commands to set up games
-- Automatic disguise management
-- Works seamlessly with respawns
+**Disguise Mode** - Uses LibsDisguises for proper skin swapping. Hunters literally look like the same player.
 
-**🎨 Fully Customizable**
-- Choose any player skin for disguises
-- Customize armor colors for stealth mode
-- Configure every aspect of the plugin
+**Auto Mode** - Uses Disguise mode if LibsDisguises is installed, Stealth mode if not.
 
-### 🎮 Perfect For
+## Setup
 
-- **Manhunt Events** - Just like the famous YouTube videos!
-- **Mini-games** - Add mystery to your server games
-- **SMP Fun** - Surprise your friends with identical hunters
-- **Content Creation** - Create your own manhunt content
+1. Set a speedrunner: `/ih runner set PlayerName`
+2. Add hunters: `/ih hunter add PlayerName`
+3. Start: `/ih start`
 
-### 📋 Requirements
+Hunters get a compass that tracks the runner. They'll all look the same. The runner won't know who's who.
 
-- Minecraft 1.21+
-- Paper or Spigot server
-- Java 21
+## Works well for
 
-**Optional:** LibsDisguises for full skin disguises
+- Regular manhunt games
+- Recorded/streamed content
+- Competitive events
+- Any scenario where hunter identity matters
 
-### 🚀 Getting Started
+## Config options
 
-1. Drop the plugin in your plugins folder
-2. Set a target: `/ih settarget <speedrunner>`
-3. Add hunters: `/ih sethunter <player>`
-4. Start the hunt: `/ih start`
-5. Have fun! 🎉
+- Disguise mode selection
+- Armor color and type
+- Player head texture
+- Compass settings
+- Custom messages
 
-### 💬 Need Help?
+## Support
 
-Join our [Discord community](https://discord.gg/7fQPG4Grwt) for support, suggestions, and to share your manhunt moments!
+https://discord.gg/7fQPG4Grwt
 
----
-
-**Note:** This plugin has no dependencies! LibsDisguises is optional for enhanced disguises, but the plugin works great on its own with "stealth mode" - invisibility and matching armor.
+Works with Minecraft 1.21+ on Paper or Spigot.
