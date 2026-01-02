@@ -43,6 +43,6 @@ Hunters get a compass that tracks the runner. They'll all look the same. The run
 
 ## Support
 
-https://discord.gg/7fQPG4Grwt
+<https://discord.gg/7fQPG4Grwt>
 
 Works with Minecraft 1.21+ on Paper or Spigot.

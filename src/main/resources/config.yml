@@ -26,10 +26,10 @@ mode: AUTO
 stealth:
   # Apply invisibility effect to hunters
   apply-invisibility: true
-  
+
   # Duration of invisibility in seconds (will be refreshed automatically)
   invisibility-duration: 60
-  
+
   # Give all hunters matching armor
   matching-armor:
     enabled: true
@@ -40,7 +40,7 @@ stealth:
     leather-color: "255,0,0"
     # Apply custom name to armor pieces
     armor-name: "&cHunter Armor"
-  
+
   # Give all hunters a player head of the disguise skin
   player-head:
     enabled: true
@@ -53,13 +53,13 @@ stealth:
 disguise:
   # Copy the skin exactly from the disguise-skin player
   copy-skin: true
-  
+
   # Show the disguise name above the player
   show-name: true
-  
+
   # Hide the player's real name in tab list
   modify-tab-list: true
-  
+
   # Make hunters appear as the same player to each other too
   self-disguise: false
 
@@ -69,19 +69,19 @@ disguise:
 game:
   # Auto-start disguises when game begins
   auto-apply-on-start: true
-  
+
   # Remove disguises when game ends
   auto-remove-on-end: true
-  
+
   # Remove disguise when a hunter dies
   remove-on-death: false
-  
+
   # Re-apply disguise when a hunter respawns
   reapply-on-respawn: true
-  
+
   # Minimum number of hunters required to start
   min-hunters: 1
-  
+
   # Broadcast messages about game events
   broadcast-events: true
 
@@ -91,19 +91,19 @@ game:
 compass:
   # Enable compass tracking for hunters
   enabled: true
-  
+
   # Give hunters a tracking compass
   give-compass: true
-  
+
   # Compass tracks the target (speedrunner) location
   track-target: true
-  
+
   # Update interval in ticks (20 ticks = 1 second)
   update-interval: 20
-  
+
   # Compass item name
   compass-name: "&6Tracking Compass"
-  
+
   # Compass item lore
   compass-lore:
     - "&7Tracks the speedrunner"

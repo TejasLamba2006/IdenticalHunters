@@ -11,10 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Utility class for advertising SMP Core plugin
  */
 public class PluginAdvertiser {
-    
+
     private static final String SMP_CORE_PLUGIN = "smp-core";
     private static final String DISCORD_LINK = "https://discord.gg/7fQPG4Grwt";
-    
+
     /**
      * Show advertisement message on plugin enable
      */
@@ -22,7 +22,7 @@ public class PluginAdvertiser {
         if (Bukkit.getPluginManager().getPlugin(SMP_CORE_PLUGIN) != null) {
             return; // SMP Core is installed, no need to advertise
         }
-        
+
         // ANSI colors for console
         String reset = "\u001B[0m";
         String red = "\u001B[31m";
@@ -30,46 +30,56 @@ public class PluginAdvertiser {
         String yellow = "\u001B[33m";
         String cyan = "\u001B[36m";
         String bold = "\u001B[1m";
-        
+
         plugin.getLogger().info("");
         plugin.getLogger().info(cyan + "╔══════════════════════════════════════════════════════════════╗" + reset);
-        plugin.getLogger().info(cyan + "║" + reset + bold + yellow + "                    ⚔ SMP CORE ⚔                            " + reset + cyan + "║" + reset);
-        plugin.getLogger().info(cyan + "║" + reset + "                                                              " + cyan + "║" + reset);
-        plugin.getLogger().info(cyan + "║" + reset + "  " + green + "Enhance your server with our complete SMP plugin suite!" + reset + "    " + cyan + "║" + reset);
-        plugin.getLogger().info(cyan + "║" + reset + "                                                              " + cyan + "║" + reset);
-        plugin.getLogger().info(cyan + "║" + reset + "  Features: Claims, Economy, Warps, Homes, and more!         " + cyan + "║" + reset);
-        plugin.getLogger().info(cyan + "║" + reset + "                                                              " + cyan + "║" + reset);
-        plugin.getLogger().info(cyan + "║" + reset + "  " + yellow + "Join our Discord: " + cyan + DISCORD_LINK + reset + "           " + cyan + "║" + reset);
+        plugin.getLogger().info(cyan + "║" + reset + bold + yellow
+                + "                    ⚔ SMP CORE ⚔                            " + reset + cyan + "║" + reset);
+        plugin.getLogger().info(cyan + "║" + reset + "                                                              "
+                + cyan + "║" + reset);
+        plugin.getLogger().info(cyan + "║" + reset + "  " + green
+                + "Enhance your server with our complete SMP plugin suite!" + reset + "    " + cyan + "║" + reset);
+        plugin.getLogger().info(cyan + "║" + reset + "                                                              "
+                + cyan + "║" + reset);
+        plugin.getLogger().info(cyan + "║" + reset + "  Features: Claims, Economy, Warps, Homes, and more!         "
+                + cyan + "║" + reset);
+        plugin.getLogger().info(cyan + "║" + reset + "                                                              "
+                + cyan + "║" + reset);
+        plugin.getLogger().info(cyan + "║" + reset + "  " + yellow + "Join our Discord: " + cyan + DISCORD_LINK + reset
+                + "           " + cyan + "║" + reset);
         plugin.getLogger().info(cyan + "╚══════════════════════════════════════════════════════════════╝" + reset);
         plugin.getLogger().info("");
-        
+
         // Register listener for in-game advertisement to ops
         Bukkit.getPluginManager().registerEvents(new PluginAdvertiserListener(plugin), plugin);
     }
-    
+
     /**
      * Listener for showing advertisement to ops on join
      */
     private static class PluginAdvertiserListener implements Listener {
-        
+
         private final JavaPlugin plugin;
-        
+
         public PluginAdvertiserListener(JavaPlugin plugin) {
             this.plugin = plugin;
         }
-        
+
         @EventHandler
         public void onPlayerJoin(PlayerJoinEvent event) {
             Player player = event.getPlayer();
-            
+
             // Only show to ops, first time per session
-            if (!player.isOp()) return;
-            if (Bukkit.getPluginManager().getPlugin(SMP_CORE_PLUGIN) != null) return;
-            
+            if (!player.isOp())
+                return;
+            if (Bukkit.getPluginManager().getPlugin(SMP_CORE_PLUGIN) != null)
+                return;
+
             // Delay message slightly
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                if (!player.isOnline()) return;
-                
+                if (!player.isOnline())
+                    return;
+
                 player.sendMessage("");
                 player.sendMessage("§8§m                                                        ");
                 player.sendMessage("§6§l⚔ SMP CORE §8- §7Complete SMP Plugin Suite");

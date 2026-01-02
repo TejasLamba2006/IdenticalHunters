@@ -15,6 +15,7 @@ The plugin has three modes:
 **DISGUISE Mode** - Requires LibsDisguises. Hunters get the same player skin and name.
 
 **STEALTH Mode** - No dependencies needed. Hunters get:
+
 - Invisibility effect
 - Matching colored leather armor
 - Player heads of a configurable skin
@@ -61,7 +62,7 @@ Hunters will be disguised and can track the runner with their compass.
 
 ## Support
 
-Discord: https://discord.gg/7fQPG4Grwt
+Discord: <https://discord.gg/7fQPG4Grwt>
 
 ## Requirements
 
