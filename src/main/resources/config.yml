@@ -1,0 +1,137 @@
+# IdenticalHunters Configuration
+# Make all hunters look identical for epic manhunt games!
+
+# ===========================================
+# GENERAL SETTINGS
+# ===========================================
+
+# The skin to use for all hunters when in DISGUISE mode
+# This should be the username of a Minecraft player whose skin you want to use
+# Some popular hunter skins: Dream, Technoblade, Sapnap, GeorgeNotFound
+disguise-skin: "Dream"
+
+# The display name to show for all disguised hunters
+# Use & for color codes, or MiniMessage format like <red>Hunter</red>
+disguise-name: "&cHunter"
+
+# Mode to use for making hunters identical
+# DISGUISE - Uses LibsDisguises (best, requires LibsDisguises plugin)
+# STEALTH - Uses invisibility + matching armor (fallback, no dependencies)
+# AUTO - Automatically uses DISGUISE if available, falls back to STEALTH
+mode: AUTO
+
+# ===========================================
+# STEALTH MODE SETTINGS (Fallback mode)
+# ===========================================
+stealth:
+  # Apply invisibility effect to hunters
+  apply-invisibility: true
+  
+  # Duration of invisibility in seconds (will be refreshed automatically)
+  invisibility-duration: 60
+  
+  # Give all hunters matching armor
+  matching-armor:
+    enabled: true
+    # Armor material: LEATHER, CHAINMAIL, IRON, DIAMOND, NETHERITE, GOLD
+    material: LEATHER
+    # Leather armor color (only applies to LEATHER material)
+    # Use RGB format: "R,G,B" or color names: RED, BLUE, GREEN, etc.
+    leather-color: "255,0,0"
+    # Apply custom name to armor pieces
+    armor-name: "&cHunter Armor"
+  
+  # Give all hunters a player head of the disguise skin
+  player-head:
+    enabled: true
+    # Force equip head (replaces current helmet)
+    force-equip: true
+
+# ===========================================
+# DISGUISE MODE SETTINGS (Requires LibsDisguises)
+# ===========================================
+disguise:
+  # Copy the skin exactly from the disguise-skin player
+  copy-skin: true
+  
+  # Show the disguise name above the player
+  show-name: true
+  
+  # Hide the player's real name in tab list
+  modify-tab-list: true
+  
+  # Make hunters appear as the same player to each other too
+  self-disguise: false
+
+# ===========================================
+# GAME SETTINGS
+# ===========================================
+game:
+  # Auto-start disguises when game begins
+  auto-apply-on-start: true
+  
+  # Remove disguises when game ends
+  auto-remove-on-end: true
+  
+  # Remove disguise when a hunter dies
+  remove-on-death: false
+  
+  # Re-apply disguise when a hunter respawns
+  reapply-on-respawn: true
+  
+  # Minimum number of hunters required to start
+  min-hunters: 1
+  
+  # Broadcast messages about game events
+  broadcast-events: true
+
+# ===========================================
+# COMPASS TRACKING (Optional Feature)
+# ===========================================
+compass:
+  # Enable compass tracking for hunters
+  enabled: true
+  
+  # Give hunters a tracking compass
+  give-compass: true
+  
+  # Compass tracks the target (speedrunner) location
+  track-target: true
+  
+  # Update interval in ticks (20 ticks = 1 second)
+  update-interval: 20
+  
+  # Compass item name
+  compass-name: "&6Tracking Compass"
+  
+  # Compass item lore
+  compass-lore:
+    - "&7Tracks the speedrunner"
+    - "&7Right-click to update"
+
+# ===========================================
+# MESSAGES
+# ===========================================
+messages:
+  prefix: "&8[&cIdenticalHunters&8] &7"
+  game-started: "&aThe hunt has begun! All hunters are now disguised."
+  game-stopped: "&cThe hunt has ended. Disguises removed."
+  hunter-added: "&a{player} is now a hunter!"
+  hunter-removed: "&c{player} is no longer a hunter."
+  target-set: "&e{player} is now the target (speedrunner)!"
+  target-removed: "&eTarget removed. No one is being hunted."
+  no-hunters: "&cThere are no hunters! Add some with /ih sethunter <player>"
+  no-target: "&cNo target set! Set one with /ih settarget <player>"
+  already-hunter: "&c{player} is already a hunter!"
+  not-hunter: "&c{player} is not a hunter!"
+  mode-auto: "&eUsing AUTO mode - will use best available disguise method."
+  mode-disguise: "&aUsing DISGUISE mode with LibsDisguises."
+  mode-stealth: "&eUsing STEALTH mode (invisibility + matching armor)."
+  libs-disguises-missing: "&cLibsDisguises not found! Falling back to STEALTH mode."
+  reload: "&aConfiguration reloaded!"
+
+# ===========================================
+# ADVERTISEMENT
+# ===========================================
+# Show advertisement for SMP Core plugin on enable (if not installed)
+show-advertisement: true

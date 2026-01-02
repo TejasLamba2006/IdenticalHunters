@@ -1,0 +1,11 @@
+com\github\tejaslamba2006\identicalhunters\commands\IdenticalHuntersCommand.class
+com\github\tejaslamba2006\identicalhunters\utils\PluginAdvertiser.class
+com\github\tejaslamba2006\identicalhunters\commands\HunterCommand.class
+com\github\tejaslamba2006\identicalhunters\listeners\CompassListener.class
+com\github\tejaslamba2006\identicalhunters\managers\DisguiseManager$DisguiseMode.class
+com\github\tejaslamba2006\identicalhunters\managers\DisguiseManager.class
+com\github\tejaslamba2006\identicalhunters\utils\PluginAdvertiser$PluginAdvertiserListener.class
+com\github\tejaslamba2006\identicalhunters\managers\HunterManager.class
+com\github\tejaslamba2006\identicalhunters\IdenticalHunters.class
+com\github\tejaslamba2006\identicalhunters\commands\IdenticalHuntersCommand$1.class
+com\github\tejaslamba2006\identicalhunters\listeners\HunterListener.class
